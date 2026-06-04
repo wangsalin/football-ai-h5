@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+:root {
+  --background: #07110d;
+  --foreground: #eef7ef;
+  --bg: #07110d;
+  --panel: #0e1f17;
+  --panel-2: #11281d;
+  --card: #132d21;
+  --line: rgba(255, 255, 255, .08);
+  --text: #eef7ef;
+  --muted: #9db4a5;
+  --gold: #f6c85f;
+  --green: #36d37e;
+  --red: #ff6675;
+  --blue: #66a6ff;
+  --orange: #ff9b54;
+  --radius: 22px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}

@@ -1,0 +1,29 @@
+<svg width="1060" height="400" viewBox="0 0 1060 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1060" y2="400" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#07110d"/>
+      <stop offset=".48" stop-color="#113421"/>
+      <stop offset="1" stop-color="#f6c85f"/>
+    </linearGradient>
+    <radialGradient id="light" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(810 118) rotate(142) scale(480 260)">
+      <stop stop-color="#ffe8a3" stop-opacity=".72"/>
+      <stop offset=".45" stop-color="#f6c85f" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#f6c85f" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="field" x1="120" y1="320" x2="1060" y2="160" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#36d37e" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#36d37e" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1060" height="400" rx="36" fill="url(#bg)"/>
+  <rect width="1060" height="400" rx="36" fill="url(#light)"/>
+  <path d="M0 300C166 262 294 286 420 330C578 384 762 408 1060 286V400H0V300Z" fill="url(#field)"/>
+  <path d="M706 95C764 56 844 58 902 98C960 138 980 206 950 266C920 326 850 355 780 340C710 325 662 271 660 207C658 157 674 117 706 95Z" fill="#07110d" fill-opacity=".22"/>
+  <circle cx="808" cy="200" r="92" fill="#07110d" fill-opacity=".20"/>
+  <path d="M768 154L826 178L820 240L756 244L730 190L768 154Z" stroke="#fff6d7" stroke-opacity=".32" stroke-width="10"/>
+  <path d="M826 178L882 154L920 202L884 258L820 240" stroke="#fff6d7" stroke-opacity=".26" stroke-width="10"/>
+  <path d="M756 244L720 294M884 258L924 304M768 154L744 96M882 154L914 102" stroke="#fff6d7" stroke-opacity=".20" stroke-width="10" stroke-linecap="round"/>
+  <text x="68" y="116" fill="#f6c85f" font-size="34" font-family="Arial, sans-serif" font-weight="700">广告</text>
+  <text x="68" y="184" fill="#ffffff" font-size="54" font-family="Arial, sans-serif" font-weight="800">本地观赛套餐</text>
+  <text x="68" y="246" fill="#d9e6dc" font-size="30" font-family="Arial, sans-serif" font-weight="600">理性观赛，轻松小聚</text>
+</svg>

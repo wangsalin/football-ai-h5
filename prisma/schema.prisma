@@ -1,0 +1,381 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  USER
+  ADVERTISER
+  ANALYST
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  DISABLED
+  PENDING
+}
+
+enum MatchStatus {
+  SCHEDULED
+  LIVE
+  FINISHED
+  CANCELLED
+}
+
+enum PublishStatus {
+  DRAFT
+  PENDING_REVIEW
+  PUBLISHED
+  OFFLINE
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum AdSlotCode {
+  HOME_TOP
+  HOME_CARD
+  MATCH_DETAIL_STICKY
+  REVIEW_TOP
+  SHARE_POSTER_BOTTOM
+  ADS_PAGE_PACKAGE
+}
+
+model User {
+  id           String     @id @default(cuid())
+  phone        String?    @unique
+  username     String?    @unique
+  passwordHash String?
+  nickname     String?
+  avatarUrl    String?
+  role         UserRole   @default(USER)
+  status       UserStatus @default(ACTIVE)
+  lastLoginAt  DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  adAccount    AdAccount?
+  auditLogs    AuditLog[]
+  favorites    FavoriteMatch[]
+  followed     FollowedTeam[]
+  reminders    Reminder[]
+  sessions     Session[]
+  systemEvents SystemEvent[]
+}
+
+model VerificationCode {
+  id        String    @id @default(cuid())
+  phone     String
+  codeHash  String
+  purpose   String    @default("LOGIN")
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Competition {
+  id        String   @id @default(cuid())
+  name      String
+  country   String?
+  level     String?
+  logoUrl   String?
+  createdAt DateTime @default(now())
+  matches   Match[]
+}
+
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  shortName   String?
+  logoUrl     String?
+  country     String?
+  createdAt   DateTime @default(now())
+
+  homeMatches Match[]  @relation("HomeTeam")
+  awayMatches Match[]  @relation("AwayTeam")
+  followers   FollowedTeam[]
+}
+
+model Match {
+  id            String      @id @default(cuid())
+  competitionId String
+  homeTeamId    String
+  awayTeamId    String
+  kickoffAt     DateTime
+  status        MatchStatus @default(SCHEDULED)
+  venue         String?
+  homeScore     Int?
+  awayScore     Int?
+  source        String?     @default("manual")
+  externalId    String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  awayTeam      Team        @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  competition   Competition @relation(fields: [competitionId], references: [id])
+  homeTeam      Team        @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  favorites     FavoriteMatch[]
+  injuries      InjuryReport[]
+  oddsSnapshots OddsSnapshot[]
+  prediction    Prediction?
+  reminders     Reminder[]
+  reviews       MatchReview[]
+  stats         MatchStats?
+
+  @@index([kickoffAt])
+  @@index([status])
+}
+
+model MatchStats {
+  id             String   @id @default(cuid())
+  matchId        String   @unique
+  homeRank       Int?
+  awayRank       Int?
+  homeRecentForm String?
+  awayRecentForm String?
+  summary        String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  match          Match    @relation(fields: [matchId], references: [id])
+}
+
+model OddsSnapshot {
+  id              String   @id @default(cuid())
+  matchId         String
+  europeanHome    Float?
+  europeanDraw    Float?
+  europeanAway    Float?
+  asianLine       String?
+  goalLine        String?
+  source          String?
+  capturedAt      DateTime @default(now())
+  match           Match    @relation(fields: [matchId], references: [id])
+}
+
+model InjuryReport {
+  id          String   @id @default(cuid())
+  matchId     String
+  teamId      String?
+  playerName  String?
+  description String
+  severity    String?
+  source      String?
+  createdAt   DateTime @default(now())
+  match       Match    @relation(fields: [matchId], references: [id])
+}
+
+model Prediction {
+  id              String        @id @default(cuid())
+  matchId          String        @unique
+  summary          String
+  winDrawLossPick  String
+  handicapPick     String?
+  scorePicks       String[]
+  totalGoalsPick   String?
+  halfFullPick     String?
+  riskLevel        RiskLevel
+  confidence       Float
+  coldAlertReason  String?
+  status           PublishStatus @default(DRAFT)
+  publishedAt      DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  match            Match         @relation(fields: [matchId], references: [id])
+  reviews          MatchReview[]
+  sections         PredictionSection[]
+}
+
+model PredictionSection {
+  id           String     @id @default(cuid())
+  predictionId String
+  sectionKey   String
+  title        String
+  content      String
+  sortOrder    Int        @default(0)
+  prediction   Prediction @relation(fields: [predictionId], references: [id])
+}
+
+model MatchReview {
+  id             String        @id @default(cuid())
+  matchId         String
+  predictionId    String?
+  actualResult    String
+  resultType      String
+  hitSummary      String
+  missReason      String?
+  correctionNote  String?
+  status          PublishStatus @default(DRAFT)
+  publishedAt     DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  match           Match         @relation(fields: [matchId], references: [id])
+  prediction      Prediction?   @relation(fields: [predictionId], references: [id])
+}
+
+model FavoriteMatch {
+  id        String   @id @default(cuid())
+  userId    String
+  matchId   String
+  createdAt DateTime @default(now())
+  match     Match    @relation(fields: [matchId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, matchId])
+}
+
+model FollowedTeam {
+  id        String   @id @default(cuid())
+  userId    String
+  teamId    String
+  createdAt DateTime @default(now())
+  team      Team     @relation(fields: [teamId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, teamId])
+}
+
+model Reminder {
+  id        String   @id @default(cuid())
+  userId    String
+  matchId   String
+  remindAt  DateTime
+  sentAt    DateTime?
+  createdAt DateTime @default(now())
+  match     Match    @relation(fields: [matchId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, matchId])
+}
+
+model AdAccount {
+  id          String       @id @default(cuid())
+  userId      String       @unique
+  companyName String
+  contactName String
+  phone       String
+  city        String?
+  status      String       @default("ACTIVE")
+  createdAt   DateTime     @default(now())
+  campaigns   AdCampaign[]
+  user        User         @relation(fields: [userId], references: [id])
+}
+
+model AdSlot {
+  id          String       @id @default(cuid())
+  code        AdSlotCode   @unique
+  name        String
+  description String?
+  enabled     Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  campaigns   AdCampaign[]
+}
+
+model AdCampaign {
+  id          String       @id @default(cuid())
+  accountId   String
+  slotId      String
+  title       String
+  description String?
+  targetUrl   String?
+  priority    Int          @default(0)
+  status      String       @default("PENDING_REVIEW")
+  startAt     DateTime
+  endAt       DateTime
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  account     AdAccount    @relation(fields: [accountId], references: [id])
+  creatives   AdCreative[]
+  events      AdEvent[]
+  slot        AdSlot       @relation(fields: [slotId], references: [id])
+}
+
+model AdCreative {
+  id          String     @id @default(cuid())
+  campaignId  String
+  imageUrl    String?
+  title       String
+  body        String?
+  status      String     @default("PENDING_REVIEW")
+  rejectReason String?
+  createdAt   DateTime   @default(now())
+  campaign    AdCampaign @relation(fields: [campaignId], references: [id])
+}
+
+model AdEvent {
+  id         String     @id @default(cuid())
+  campaignId String
+  eventType  String
+  pagePath   String?
+  userId     String?
+  ipHash     String?
+  userAgent  String?
+  createdAt  DateTime   @default(now())
+  campaign   AdCampaign @relation(fields: [campaignId], references: [id])
+
+  @@index([campaignId, eventType, createdAt])
+}
+
+model LeadForm {
+  id          String   @id @default(cuid())
+  companyName String
+  contactName String
+  phone       String
+  city        String?
+  budget      String?
+  message     String?
+  status      String   @default("NEW")
+  createdAt   DateTime @default(now())
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  actorRole  String?
+  action     String
+  entityType String
+  entityId   String?
+  beforeJson Json?
+  afterJson  Json?
+  ipHash     String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+  actor      User?    @relation(fields: [actorId], references: [id])
+}
+
+model SystemEvent {
+  id        String   @id @default(cuid())
+  eventName String
+  userId    String?
+  path      String?
+  payload   Json?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id])
+
+  @@index([eventName, createdAt])
+  @@index([userId, createdAt])
+}
+
+model SystemConfig {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     Json
+  updatedAt DateTime @updatedAt
+}

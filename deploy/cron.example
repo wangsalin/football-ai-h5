@@ -1,0 +1,18 @@
+SHELL=/bin/bash
+APP_URL=https://example.com
+CRON_SECRET=CHANGE_ME_TO_THE_SAME_VALUE_AS_ENV
+
+# Run all scheduled jobs in Beijing time.
+CRON_TZ=Asia/Shanghai
+
+# Sync China Sports Lottery matches at 12:00.
+0 12 * * * curl -fsS -X POST "$APP_URL/api/admin/jobs/sync-matches" -H "Authorization: Bearer $CRON_SECRET" >/dev/null
+
+# Generate predictions after the daily match sync.
+5 12 * * * curl -fsS -X POST "$APP_URL/api/admin/jobs/auto-predictions" -H "Authorization: Bearer $CRON_SECRET" >/dev/null
+
+# Re-analyze matches shortly before kickoff. Backend settings control the exact window.
+*/5 * * * * curl -fsS -X POST "$APP_URL/api/admin/jobs/prematch-reanalysis" -H "Authorization: Bearer $CRON_SECRET" >/dev/null
+
+# Generate reviews at 11:30 after finished matches have scores.
+30 11 * * * curl -fsS -X POST "$APP_URL/api/admin/jobs/auto-reviews" -H "Authorization: Bearer $CRON_SECRET" >/dev/null

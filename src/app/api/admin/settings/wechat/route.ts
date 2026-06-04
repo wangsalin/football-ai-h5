@@ -1,0 +1,40 @@
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { getCurrentUser } from "@/lib/auth";
+import { hasRole } from "@/lib/permissions";
+import { fail, ok } from "@/lib/response";
+import { updateWechatSettings } from "@/services/admin-settings";
+
+const wechatSettingsSchema = z.object({
+  enabled: z.boolean(),
+  appId: z.string().trim().optional().default(""),
+  appSecret: z.string().optional().default(""),
+  appSecretSet: z.boolean().optional().default(false),
+  token: z.string().optional().default(""),
+  tokenSet: z.boolean().optional().default(false),
+  encodingAesKey: z.string().optional().default(""),
+  encodingAesKeySet: z.boolean().optional().default(false),
+  jsSdkEnabled: z.boolean(),
+  shareTitle: z.string().trim().min(1),
+  shareDescription: z.string().trim().min(1),
+  shareImageUrl: z.string().trim().min(1),
+});
+
+export async function POST(request: Request) {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return NextResponse.json(fail("UNAUTHORIZED", "登录已失效，请重新登录"), { status: 401 });
+  }
+
+  if (!hasRole(user.role, "ADMIN")) {
+    return NextResponse.json(fail("FORBIDDEN", "当前账号无权修改微信设置"), { status: 403 });
+  }
+
+  const parsed = wechatSettingsSchema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) {
+    return NextResponse.json(fail("VALIDATION_ERROR", "微信设置参数错误", parsed.error.flatten()), { status: 422 });
+  }
+
+  return NextResponse.json(ok({ settings: await updateWechatSettings({ ...parsed.data, actor: user }) }));
+}

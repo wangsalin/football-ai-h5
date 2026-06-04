@@ -1,0 +1,19 @@
+[Unit]
+Description=Football AI H5 Next.js app
+After=network.target postgresql.service redis-server.service
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/football-ai-h5/current
+EnvironmentFile=/var/www/football-ai-h5/shared/.env.production
+Environment=PORT=3000
+ExecStart=/usr/bin/pnpm start
+Restart=always
+RestartSec=5
+KillSignal=SIGINT
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
