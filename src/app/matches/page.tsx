@@ -73,7 +73,7 @@ export default async function MatchesPage() {
               match={match}
               canViewAnalysis={canViewAnalysis}
               showSummaryPreview={canViewAnalysis}
-              showFullAnalysis={canViewAnalysis}
+              showScorePreview={canViewAnalysis}
             />
           ))
         ) : (
