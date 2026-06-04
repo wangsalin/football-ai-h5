@@ -92,6 +92,15 @@ export function MatchCard({
               ))}
             </div>
           ) : null}
+
+          <Link
+            className="inline-flex min-h-11 w-full items-center justify-center gap-1 rounded-full bg-[#36d37e] px-4 text-sm font-semibold text-[#07110d] transition hover:bg-[#5de697] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f6c85f]"
+            href={detailHref}
+            aria-label={`${match.homeTeam}对${match.awayTeam}单场分析页`}
+          >
+            查看单场分析
+            <ChevronRight size={16} aria-hidden="true" />
+          </Link>
         </div>
       ) : (
         <div className="mt-4 grid grid-cols-[1fr_auto] items-end gap-3">
