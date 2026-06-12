@@ -5,7 +5,7 @@ export const defaultSiteName = "每日足球 AI 预测";
 export const defaultShareTitle = "每日足球 AI 预测";
 export const defaultShareDescription = "今日重点赛事、AI 数据分析、赛后复盘和风险提示，仅作数据分析参考。";
 
-const shareImagePath = "/wechat-share-card.png";
+const shareImagePath = "/wechat-share-card.jpg";
 
 export function getPublicBaseUrl() {
   const rawUrl = process.env.APP_URL ?? process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
@@ -58,6 +58,7 @@ export function createShareMetadata({
           url: imageUrl,
           width: 600,
           height: 600,
+          type: "image/jpeg",
           alt: title,
         },
       ],
@@ -72,6 +73,10 @@ export function createShareMetadata({
       "itemprop:name": title,
       "itemprop:description": description,
       "itemprop:image": imageUrl,
+      "image": imageUrl,
+      "thumbnail": imageUrl,
+      "og:image:secure_url": imageUrl,
+      "og:image:type": "image/jpeg",
     },
   };
 }

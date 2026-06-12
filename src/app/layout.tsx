@@ -45,6 +45,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+      <head>
+        <meta property="og:image:secure_url" content="https://zq.eyucn.com/wechat-share-card.jpg" />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta name="image" content="https://zq.eyucn.com/wechat-share-card.jpg" />
+        <meta name="thumbnail" content="https://zq.eyucn.com/wechat-share-card.jpg" />
+        <link rel="image_src" href="https://zq.eyucn.com/wechat-share-card.jpg" />
+      </head>
       <body className="min-h-full">
         {children}
         <WechatShareBridge />

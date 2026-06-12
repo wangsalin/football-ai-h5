@@ -156,7 +156,7 @@ export const defaultWechatSettings: WechatSettings = {
   jsSdkEnabled: false,
   shareTitle: "每日足球 AI 预测",
   shareDescription: "今日中国体彩竞彩足球赛事、AI 数据分析和风险提示。",
-  shareImageUrl: "/wechat-share-card.png",
+  shareImageUrl: "/wechat-share-card.jpg",
 };
 
 export const defaultAutomationSettings: AutomationSettings = {
