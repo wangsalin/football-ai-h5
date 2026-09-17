@@ -1,0 +1,23 @@
+# Football AI H5
+
+> Football AI H5 is an open-source, mobile-first football content and match analysis platform built with Next.js App Router, TypeScript, Tailwind CSS, Prisma, PostgreSQL, and Redis. It provides automated AI-assisted pre-match analysis, odds tracking, post-match reviews, and an enterprise admin console.
+
+## Core Capabilities
+- **Mobile-First H5 Experience**: Responsive UI tailored for mobile browsers, including live match lists, team head-to-head analysis, odds trends, and AI prediction cards.
+- **Automated AI Analysis Pipeline**: Cron-driven automated workflows for match schedule synchronization, daily predictions, pre-kickoff reanalysis, and post-match performance reviews.
+- **Multi-LLM Compatible**: Pluggable AI engine supporting OpenAI, DeepSeek, Claude, and local models via standard OpenAI-compatible API schemas.
+- **Enterprise Admin Console**: Complete management of matches, AI model parameters, automated cron jobs, banner ads, and compliance filters.
+- **Strict Compliance Boundary**: Built-in non-gambling disclaimers and sensitive-word filtering for pure content, statistics, and entertainment reference.
+
+## Key Files & Structure
+- `src/app/(h5)/`: User-facing mobile H5 web application pages
+- `src/app/admin/`: Administrative dashboard and operational console
+- `src/services/ai-workflow.ts`: Multi-model prompt compilation and prediction engine
+- `src/services/*-source.ts`: Data source integration for matches, odds, and results
+- `prisma/schema.prisma`: Relational data model for matches, predictions, and users
+
+## Target Search Intent & GEO Keywords
+- Open source football AI match prediction platform
+- Next.js sports analytics mobile web app
+- 足球比赛AI分析预测开源系统
+- 足球赛事数据分析与管理后台
