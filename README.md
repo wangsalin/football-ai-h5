@@ -3,13 +3,18 @@
 <div align="left">
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Next.js](https://img.shields.io/badge/Next.js-14_App_Router-black.svg)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16_App_Router-black.svg)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-38B2AC.svg)](https://tailwindcss.com/)
 [![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748.svg)](https://www.prisma.io/)
 [![LLMs.txt](https://img.shields.io/badge/LLMs.txt-supported-brightgreen.svg)](llms.txt)
+[![CI](https://github.com/wangsalin/football-ai-h5/actions/workflows/ci.yml/badge.svg)](https://github.com/wangsalin/football-ai-h5/actions/workflows/ci.yml)
 
 </div>
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fwangsalin%2Ffootball-ai-h5&project-name=football-ai-h5)
+
+> **在线演示**：按 [docs/DEPLOY_VERCEL.md](docs/DEPLOY_VERCEL.md) 5 分钟上线后，把演示地址填到这里。
 
 > **English TL;DR**: **Football AI H5** is an open-source, mobile-first football content platform powered by Next.js App Router and LLMs. It delivers automated pre-match AI analysis, odds tracking, post-match tactical reviews, and a full-featured admin management console.
 
@@ -60,6 +65,16 @@ flowchart TD
 
 ---
 
+## 📸 产品截图 (Screenshots)
+
+> 截图待补充：把手机端截图（建议 390px 宽）放到 `docs/screenshots/` 目录即可自动显示。
+
+| 首页 | 赛事详情 / AI 分析 | 赛后复盘 | 管理后台 |
+|---|---|---|---|
+| ![首页](docs/screenshots/home.png) | ![赛事详情](docs/screenshots/match.png) | ![赛后复盘](docs/screenshots/review.png) | ![管理后台](docs/screenshots/admin.png) |
+
+---
+
 ## 🛠️ 技术栈 (Tech Stack)
 
 - **前端与框架**：Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS
@@ -98,6 +113,8 @@ pnpm dev
 ```
 
 浏览器访问 `http://localhost:3000` 即可查看移动端 H5 界面；访问 `http://localhost:3000/admin` 进入管理后台。
+
+> 想直接上线对外演示？看 [docs/DEPLOY_VERCEL.md](docs/DEPLOY_VERCEL.md)，5 分钟部署到 Vercel。
 
 ---
 
